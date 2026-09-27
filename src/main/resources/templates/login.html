@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Online Book Store</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 900px;
+            max-width: 92%;
+            min-height: 520px;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            display: flex;
+        }
+
+        /* LEFT SIDE */
+
+        .left-section {
+            width: 50%;
+            background: linear-gradient(
+                    135deg,
+                    #2c3e50,
+                    #34495e
+            );
+
+            color: white;
+            padding: 55px 45px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .left-section h1 {
+            font-size: 34px;
+            margin: 0 0 15px 0;
+        }
+
+        .left-section p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #e5e7eb;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            margin-top: 10px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        .feature-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+
+        /* RIGHT SIDE */
+
+        .right-section {
+            width: 50%;
+            padding: 55px 50px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right-section h2 {
+            margin: 0 0 8px 0;
+            font-size: 30px;
+            color: #2c3e50;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #d6d9df;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.12);
+        }
+
+
+        /* LOGIN BUTTON */
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+
+            background: #3498db;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #2980b9;
+        }
+
+
+        /* ERROR MESSAGE */
+
+        .error-message {
+            background: #fdecec;
+            color: #c0392b;
+            border: 1px solid #f5c6cb;
+            padding: 10px 12px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+
+        /* LOGOUT MESSAGE */
+
+        .logout-message {
+            background: #eafaf1;
+            color: #218c54;
+            border: 1px solid #b7ebc6;
+            padding: 10px 12px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+
+        .footer-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #999;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .login-container {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+            }
+
+            .left-section {
+                padding: 35px;
+            }
+
+            .right-section {
+                padding: 35px;
+            }
+
+            .features {
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <!-- LEFT SECTION -->
+
+    <div class="left-section">
+
+        <div class="logo">
+            📚
+        </div>
+
+        <h1>
+            Online Book Store
+        </h1>
+
+        <p>
+            Discover your next great read.
+            Browse books, manage your cart,
+            and place orders easily from one
+            simple platform.
+        </p>
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✓
+                </div>
+
+                Browse Books
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🛒
+                </div>
+
+                Manage Your Cart
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📦
+                </div>
+
+                Track Your Orders
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT SECTION -->
+
+    <div class="right-section">
+
+        <h2>
+            Welcome Back
+        </h2>
+
+        <div class="subtitle">
+            Sign in to continue to your account
+        </div>
+
+
+        <!-- Login Error -->
+
+        <div class="error-message"
+             th:if="${param.error}">
+
+            Invalid username or password.
+
+        </div>
+
+
+        <!-- Logout Message -->
+
+        <div class="logout-message"
+             th:if="${param.logout}">
+
+            You have been logged out successfully.
+
+        </div>
+
+
+        <!-- LOGIN FORM -->
+
+        <form th:action="@{/login}"
+              method="post">
+
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        required
+                        autofocus>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required>
+
+            </div>
+
+
+            <button
+                    type="submit"
+                    class="login-button">
+
+                Sign In
+
+            </button>
+
+        </form>
+
+
+        <div class="footer-text">
+
+            🔒 Secure Login · Online Book Store
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BookNest | Online Book Store</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-links a {
+            text-decoration: none;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .header-links a:hover {
+            background: #374151;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 55px 7%;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            opacity: 0.95;
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-section {
+            padding: 28px 7% 10px;
+        }
+
+        .search-box {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-form input:focus {
+            border-color: #2563eb;
+        }
+
+        .search-form select {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .search-button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .search-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= BOOK SECTION ================= */
+
+        .books-section {
+            padding: 30px 7% 60px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .section-header h2 {
+            font-size: 27px;
+            color: #1f2937;
+        }
+
+        .result-text {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ================= BOOK GRID ================= */
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 22px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 7px 22px rgba(0, 0, 0, 0.12);
+        }
+
+        .book-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 17px;
+        }
+
+        .book-title {
+            font-size: 19px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .book-author {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 13px;
+        }
+
+        .category {
+            display: inline-block;
+            width: fit-content;
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .book-info {
+            margin-top: auto;
+        }
+
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 7px;
+        }
+
+        .stock {
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .stock-available {
+            color: #15803d;
+        }
+
+        .stock-low {
+            color: #d97706;
+        }
+
+        .stock-out {
+            color: #dc2626;
+        }
+
+        .details-button {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .details-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-message {
+            background: white;
+            padding: 45px;
+            border-radius: 12px;
+            text-align: center;
+            color: #6b7280;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
+        }
+
+        .empty-message h3 {
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #1f2937;
+            color: #d1d5db;
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 768px) {
+
+            header {
+                padding: 16px 5%;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 40px 5%;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .search-section,
+            .books-section {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-form select,
+            .search-button {
+                width: 100%;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="logo">
+        📚 BookNest
+    </div>
+
+    <div class="header-links">
+
+        <!-- ADMIN LINK - ONLY ADMIN CAN SEE -->
+        <a href="/admin"
+           sec:authorize="hasRole('ADMIN')">
+            ⚙ Admin
+        </a>
+
+        <a href="/cart">
+            🛒 Cart
+        </a>
+
+        <a href="/orders">
+            📦 My Orders
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <h1>Find Your Next Great Read</h1>
+
+    <p>
+        Explore our collection of books and discover something new to read.
+    </p>
+
+</section>
+
+
+<!-- ================= SEARCH ================= -->
+
+<section class="search-section">
+
+    <div class="search-box">
+
+        <form class="search-form"
+              th:action="@{/search}"
+              method="get">
+
+            <input
+                    type="text"
+                    name="keyword"
+                    placeholder="Search books..."
+                    th:value="${keyword}"
+                    required>
+
+            <select name="type">
+
+                <option value="title"
+                        th:selected="${searchType == null or searchType == 'title'}">
+                    Title
+                </option>
+
+                <option value="category"
+                        th:selected="${searchType == 'category'}">
+                    Category
+                </option>
+
+            </select>
+
+            <button type="submit"
+                    class="search-button">
+                🔍 Search
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ================= BOOKS ================= -->
+
+<section class="books-section">
+
+    <div class="section-header">
+
+        <h2>Available Books</h2>
+
+        <div class="result-text"
+             th:if="${books != null}">
+            <span th:text="${books.size()}"></span>
+            book(s) found
+        </div>
+
+    </div>
+
+
+    <!-- BOOK GRID -->
+
+    <div class="book-grid"
+         th:if="${books != null and !books.isEmpty()}">
+
+        <div class="book-card"
+             th:each="book : ${books}">
+
+            <div class="book-icon">
+                📖
+            </div>
+
+            <div class="book-title"
+                 th:text="${book.title}">
+                Book Title
+            </div>
+
+            <div class="book-author">
+                By
+                <span th:text="${book.author}">
+                    Author
+                </span>
+            </div>
+
+            <div class="category"
+                 th:text="${book.category}">
+                Category
+            </div>
+
+            <div class="book-info">
+
+                <div class="price">
+                    ₹<span th:text="${book.price}">0</span>
+                </div>
+
+
+                <!-- STOCK -->
+
+                <div class="stock stock-available"
+                     th:if="${book.stock > 5}">
+
+                    ✓
+                    <span th:text="${book.stock}"></span>
+                    copies available
+
+                </div>
+
+
+                <div class="stock stock-low"
+                     th:if="${book.stock > 0 and book.stock <= 5}">
+
+                    ⚠ Only
+                    <span th:text="${book.stock}"></span>
+                    copies left
+
+                </div>
+
+
+                <div class="stock stock-out"
+                     th:if="${book.stock == 0}">
+
+                    ✕ Out of stock
+
+                </div>
+
+
+                <!-- DETAILS BUTTON -->
+
+                <a class="details-button"
+                   th:href="@{/books/{id}(id=${book.id})}">
+
+                    View Details
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EMPTY RESULT -->
+
+    <div class="empty-message"
+         th:if="${books == null or books.isEmpty()}">
+
+        <h3>📚 No Books Found</h3>
+
+        <p>
+            We couldn't find any books matching your search.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 BookNest — Online Book Store
+
+</footer>
+
+</body>
+
+</html>
+

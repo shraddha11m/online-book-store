@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Cart | Online Book Store</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f7fb;
+        }
+
+        /* HEADER */
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 50px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+
+        /* CART CARD */
+
+        .cart-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-card h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+
+
+        /* CART ITEM */
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 20px 0;
+
+            border-bottom: 1px solid #eeeeee;
+        }
+
+
+        /* BOOK INFORMATION */
+
+        .book-info {
+            flex: 1;
+        }
+
+        .book-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .book-info p {
+            margin: 6px 0;
+            color: #555555;
+        }
+
+
+        /* QUANTITY FORM */
+
+        .quantity-form {
+            margin-top: 15px;
+
+            position: relative;
+            z-index: 10;
+        }
+
+        .quantity-form label {
+            font-size: 14px;
+            color: #444444;
+        }
+
+
+        /* QUANTITY INPUT */
+
+        .quantity-input {
+            width: 65px;
+
+            padding: 8px;
+
+            margin-left: 5px;
+
+            font-size: 15px;
+
+            border: 1px solid #cccccc;
+
+            border-radius: 5px;
+
+            outline: none;
+        }
+
+        .quantity-input:focus {
+            border-color: #3498db;
+        }
+
+
+        /* UPDATE BUTTON */
+
+        .update-button {
+            display: inline-block;
+
+            position: relative;
+            z-index: 20;
+
+            padding: 9px 16px;
+
+            margin-left: 6px;
+
+            background-color: #3498db;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            pointer-events: auto;
+        }
+
+        .update-button:hover {
+            background-color: #2980b9;
+        }
+
+
+        /* ITEM TOTAL */
+
+        .item-total {
+            font-size: 18px;
+
+            font-weight: bold;
+
+            margin-left: 30px;
+
+            min-width: 120px;
+
+            text-align: right;
+
+            color: #2c3e50;
+        }
+
+
+        /* CART TOTAL */
+
+        .cart-total {
+            text-align: right;
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 2px solid #dddddd;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            color: #2c3e50;
+        }
+
+
+        /* PLACE ORDER */
+
+        .place-order-container {
+            text-align: right;
+
+            margin-top: 20px;
+
+            position: relative;
+
+            z-index: 10;
+        }
+
+        .place-order-button {
+            display: inline-block;
+
+            position: relative;
+
+            z-index: 20;
+
+            padding: 12px 25px;
+
+            background-color: #27ae60;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 6px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            pointer-events: auto;
+        }
+
+        .place-order-button:hover {
+            background-color: #219150;
+        }
+
+
+        /* EMPTY CART */
+
+        .empty-cart {
+            text-align: center;
+
+            padding: 40px;
+
+            color: #777777;
+        }
+
+
+        /* BACK BUTTON */
+
+        .back-button {
+            display: inline-block;
+
+            margin-top: 25px;
+
+            padding: 12px 20px;
+
+            background-color: #3498db;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 18px 25px;
+            }
+
+            .container {
+                width: 95%;
+                margin: 25px auto;
+            }
+
+            .cart-card {
+                padding: 20px;
+            }
+
+            .cart-item {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .item-total {
+                margin-left: 0;
+
+                margin-top: 15px;
+
+                text-align: left;
+            }
+
+            .cart-total {
+                text-align: left;
+            }
+
+            .place-order-container {
+                text-align: left;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header>
+
+    <h1>
+        📚 Online Book Store
+    </h1>
+
+</header>
+
+
+<!-- MAIN CONTAINER -->
+
+<div class="container">
+
+    <div class="cart-card">
+
+
+        <h2>
+            🛒 My Cart
+        </h2>
+
+
+        <!-- ===================================== -->
+        <!-- CART HAS ITEMS -->
+        <!-- ===================================== -->
+
+        <div th:if="${cartItems != null and !cartItems.isEmpty()}">
+
+
+            <!-- CART ITEM -->
+
+            <div class="cart-item"
+                 th:each="item : ${cartItems}">
+
+
+                <!-- BOOK INFORMATION -->
+
+                <div class="book-info">
+
+
+                    <h3 th:text="${item.book.title}">
+                        Clean Code
+                    </h3>
+
+
+                    <p>
+
+                        Author:
+
+                        <span th:text="${item.book.author}">
+                            Robert C. Martin
+                        </span>
+
+                    </p>
+
+
+                    <p>
+
+                        Price:
+
+                        ₹<span th:text="${item.book.price}">
+                            450
+                        </span>
+
+                    </p>
+
+
+                    <!-- ================================= -->
+                    <!-- UPDATE QUANTITY FORM -->
+                    <!-- ================================= -->
+
+                    <form method="post"
+                          th:action="@{/cart/update}"
+                          class="quantity-form">
+
+
+                        <label for="quantity">
+
+                            Quantity:
+
+                        </label>
+
+
+                        <input type="hidden"
+                               name="bookId"
+                               th:value="${item.book.id}">
+
+
+                        <input type="number"
+                               id="quantity"
+                               name="quantity"
+                               th:value="${item.quantity}"
+                               min="1"
+                               th:max="${item.book.stock}"
+                               class="quantity-input">
+
+
+                        <button type="submit"
+                                class="update-button">
+
+                            Update
+
+                        </button>
+
+
+                    </form>
+
+
+                </div>
+
+
+                <!-- ================================= -->
+                <!-- ITEM TOTAL -->
+                <!-- ================================= -->
+
+                <div class="item-total">
+
+                    ₹<span th:text="${item.book.price * item.quantity}">
+                        900
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- CART TOTAL -->
+            <!-- ================================= -->
+
+            <div class="cart-total">
+
+                Total:
+
+                ₹<span th:text="${#aggregates.sum(cartItems.![book.price * quantity])}">
+                    900
+                </span>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- PLACE ORDER -->
+            <!-- ================================= -->
+
+            <div class="place-order-container">
+
+
+                <form method="post"
+                      th:action="@{/orders/place}">
+
+
+                    <button type="submit"
+                            class="place-order-button">
+
+                        🛒 Place Order
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- EMPTY CART -->
+        <!-- ===================================== -->
+
+        <div class="empty-cart"
+             th:if="${cartItems == null or cartItems.isEmpty()}">
+
+
+            <h3>
+
+                Your cart is empty 🛒
+
+            </h3>
+
+
+            <p>
+
+                Add some books to your cart.
+
+            </p>
+
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- CONTINUE SHOPPING -->
+        <!-- ===================================== -->
+
+        <a href="/"
+           class="back-button">
+
+            ← Continue Shopping
+
+        </a>
+
+
+    </div>
+
+</div>
+<div class="place-order-container">
+
+    <a href="/orders/checkout"
+       class="place-order-button"
+       style="text-decoration: none;">
+
+        🛒 Proceed to Checkout
+
+    </a>
+
+</div>
+
+
+</body>
+
+</html>

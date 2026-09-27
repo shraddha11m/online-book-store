@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | Online Book Store</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 50px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .order {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order h3 {
+            margin: 0 0 8px 0;
+        }
+
+        .order p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .placed {
+            color: #27ae60;
+        }
+
+        .cancelled {
+            color: #e74c3c;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .empty {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        @media(max-width:700px) {
+
+            .order {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>📚 Online Book Store</h1>
+
+</header>
+
+<div class="container">
+
+    <h2>📦 My Orders</h2>
+
+    <div th:if="${orders != null and !orders.isEmpty()}">
+
+        <div class="card"
+             th:each="order : ${orders}">
+
+            <div class="order">
+
+                <div>
+
+                    <h3>
+                        Order #
+                        <span th:text="${order.id}">
+                            1
+                        </span>
+                    </h3>
+
+                    <p>
+                        Date:
+                        <span th:text="${order.orderDate}">
+                            Date
+                        </span>
+                    </p>
+
+                    <p>
+                        Payment:
+                        <span th:text="${order.paymentMethod}">
+                            UPI
+                        </span>
+                    </p>
+
+                    <p>
+
+                        Status:
+
+                        <span class="status"
+                              th:classappend="${order.status == 'CANCELLED'} ? ' cancelled' : ' placed'"
+                              th:text="${order.status}">
+
+                            PLACED
+
+                        </span>
+
+                    </p>
+
+                    <p>
+
+                        Total:
+                        ₹<strong th:text="${order.totalAmount}">
+                        900
+                    </strong>
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <a th:href="@{/orders/{id}(id=${order.id})}"
+                       class="button">
+
+                        View Details →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="empty"
+         th:if="${orders == null or orders.isEmpty()}">
+
+        <h3>
+            No orders yet 📦
+        </h3>
+
+        <p>
+            Your placed orders will appear here.
+        </p>
+
+    </div>
+
+    <a href="/"
+       class="back">
+
+        ← Continue Shopping
+
+    </a>
+
+</div>
+
+</body>
+
+</html>
